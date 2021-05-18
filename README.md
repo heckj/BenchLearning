@@ -8,7 +8,7 @@ It's easiest to run from the command line:
 
 ```bash
 rm results
-swift run -c release sample-benchmark run --cycles 50 --max-size 10 results
+swift run -c release sample-benchmark run --cycles 50 --max-size 2 results
 swift run -c release sample-benchmark render results chart.png
 open chart.png
 ```

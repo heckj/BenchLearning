@@ -27,20 +27,20 @@ let lockTask = Task<Int>("nslock") { someInt in
 }
 benchmark.add(lockTask)
 
-benchmark.add(title: "os_unfair_lock", input: Int.self, maxSize: 1) { someInt in
-    return { timer in
-        nslock()
-    }
-}
+//benchmark.add(title: "os_unfair_lock", input: Int.self, maxSize: 1) { someInt in
+//    return { timer in
+//        nslock()
+//    }
+//}
 
-benchmark.addSimple(
-  title: "blackhole os_unfair_lock",
-  input: Int.self
-) { input in
-  blackHole(
-    unfairlock()
-  )
-}
+//benchmark.addSimple(
+//  title: "blackhole os_unfair_lock",
+//  input: Int.self
+//) { input in
+//  blackHole(
+//    unfairlock()
+//  )
+//}
 
 benchmark.addSimple(
   title: "blackhole nslock",
