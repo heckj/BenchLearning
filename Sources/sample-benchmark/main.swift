@@ -4,9 +4,9 @@ import Foundation
 // Create a new benchmark instance.
 var benchmark = Benchmark(title: "Locking")
 
-benchmark.registerInputGenerator(for: String.self) { size in
-    return "\(size)"
-}
+//benchmark.registerInputGenerator(for: String.self) { size in
+//    return "\(size)"
+//}
 
 var _oldLock = os_unfair_lock_s()
 let _newLock = NSLock()
@@ -19,9 +19,23 @@ func nslock() {
     _newLock.unlock()
 }
 
+// more complex version of adding a task
+let lockTask = Task<Int>("nslock") { someInt in
+    return { timer in
+        nslock()
+    }
+}
+benchmark.add(lockTask)
+
+benchmark.add(title: "os_unfair_lock", input: Int.self, maxSize: 1) { someInt in
+    return { timer in
+        nslock()
+    }
+}
+
 benchmark.addSimple(
-  title: "only os_unfair_lock",
-  input: String.self
+  title: "blackhole os_unfair_lock",
+  input: Int.self
 ) { input in
   blackHole(
     unfairlock()
@@ -29,8 +43,8 @@ benchmark.addSimple(
 }
 
 benchmark.addSimple(
-  title: "only nslock",
-  input: String.self
+  title: "blackhole nslock",
+  input: Int.self
 ) { input in
   blackHole(
     nslock()
